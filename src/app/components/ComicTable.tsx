@@ -24,7 +24,7 @@ export default function ComicTable({ comics }: Props) {
           <TableRow>
             <TableCell>タイトル</TableCell>
             <TableCell>入力者</TableCell>
-            <TableCell>購入チェック</TableCell>
+            <TableCell>購入</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
