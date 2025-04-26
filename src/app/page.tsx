@@ -1,3 +1,11 @@
+import { Box, Typography } from "@mui/material";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <Box>
+      <Typography variant="h1" gutterBottom fontSize={24}>
+        マンガ購入管理アプリ
+      </Typography>
+    </Box>
+  );
 }
