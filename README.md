@@ -1,9 +1,18 @@
+# Comic Manager
+
 ## Getting Started
 
 ライブラリインストール
 
 ```bash
 npm i
+```
+
+.envファイルを作成して環境変数をセットする
+
+```bash
+cp .env.example .env
+# 作成された.envファイルを編集する
 ```
 
 開発用サーバーの起動
