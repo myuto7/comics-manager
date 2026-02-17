@@ -34,7 +34,12 @@ export default function ComicTable({ comics }: Props) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                <a href={`https://piccoma.com/web/search/result?word=${comic.title}`} target="_blank">{comic.title}</a>
+                <a
+                  href={`https://piccoma.com/web/search/result?word=${comic.title}`}
+                  target="_blank"
+                >
+                  {comic.title}
+                </a>
               </TableCell>
               <TableCell>{comic.creator}</TableCell>
               <TableCell>
