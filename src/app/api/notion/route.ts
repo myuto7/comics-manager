@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
+import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { Comic } from "@/app/type";
 
 const notion = new Client({
@@ -7,6 +8,15 @@ const notion = new Client({
 });
 
 const databaseId = process.env.DB_ID!;
+
+// SQS クライアントの初期化
+const sqsClient = new SQSClient({
+  region: process.env.AWS_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 export async function GET() {
   try {
@@ -35,6 +45,7 @@ export async function POST(req: Request) {
   const { title, creator } = await req.json();
 
   try {
+    // Notionに登録
     await notion.pages.create({
       parent: { database_id: databaseId },
       properties: {
@@ -61,6 +72,17 @@ export async function POST(req: Request) {
         },
       },
     });
+
+    // SQSにメッセージを送信（LINE通知用）
+    const command = new SendMessageCommand({
+      QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+      MessageBody: JSON.stringify({
+        title,
+        creator,
+      }),
+    });
+
+    await sqsClient.send(command);
 
     return NextResponse.json({ success: true });
   } catch (error) {
