@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { ThemeRegistry } from "./components/ThemeRegistry";
 
 export const metadata: Metadata = {
   title: "comics manager",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <AppRouterCacheProvider>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
