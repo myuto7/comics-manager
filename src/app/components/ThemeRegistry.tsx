@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, GlobalStyles } from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -48,6 +48,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         root: {
@@ -63,6 +70,13 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <GlobalStyles
+        styles={{
+          "html, body": {
+            minHeight: "100%",
+          },
+        }}
+      />
       {children}
     </ThemeProvider>
   );
