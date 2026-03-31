@@ -74,7 +74,6 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
         styles={{
           "html, body": {
             minHeight: "100%",
-            background: "linear-gradient(135deg, #EEF2FF 0%, #E0F2FE 100%) !important",
           },
         }}
       />
