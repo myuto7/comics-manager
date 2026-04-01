@@ -55,7 +55,6 @@ export async function GET(req: Request) {
 
         if (!title) return null;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const authors: string[] = manga.relationships
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           .filter((r: any) => r.type === "author")
@@ -63,7 +62,6 @@ export async function GET(req: Request) {
           .map((r: any) => r.attributes?.name as string | undefined)
           .filter(Boolean);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const coverRel = manga.relationships.find(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (r: any) => r.type === "cover_art"
@@ -76,7 +74,7 @@ export async function GET(req: Request) {
         return {
           title,
           authors,
-          isbn: manga.id, // MangaDex UUID を識別子として使用
+          mangadexUuid: manga.id,
           thumbnail,
         };
       })

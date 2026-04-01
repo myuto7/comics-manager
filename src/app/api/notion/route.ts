@@ -31,8 +31,8 @@ export async function GET() {
         title: page.properties["タイトル"].title[0].text.content ?? "",
         creator: page.properties["入力者"].rich_text[0].text.content ?? "",
         isPurchased: page.properties["購入済み"].checkbox ?? false,
-        isbn:
-          page.properties["ISBN"]?.rich_text[0]?.text?.content || undefined,
+        mangadexUuid:
+          page.properties["MangaDexUUID"]?.rich_text[0]?.text?.content || undefined,
         thumbnail: page.properties["表紙URL"]?.url || undefined,
       })
     );
@@ -45,7 +45,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { title, creator, isbn, thumbnail } = await req.json();
+  const { title, creator, mangadexUuid, thumbnail } = await req.json();
 
   try {
     // Notionに登録
@@ -73,11 +73,11 @@ export async function POST(req: Request) {
         購入済み: {
           checkbox: false,
         },
-        ISBN: {
+        MangaDexUUID: {
           rich_text: [
             {
               text: {
-                content: isbn ?? "",
+                content: mangadexUuid ?? "",
               },
             },
           ],
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
       MessageBody: JSON.stringify({
         title,
         creator,
-        isbn,
+        mangadexUuid,
         thumbnail,
       }),
     });

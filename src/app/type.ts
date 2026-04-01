@@ -3,20 +3,20 @@ export type Comic = {
   title: string;
   creator: string;
   isPurchased: boolean;
-  isbn?: string;
+  mangadexUuid?: string;
   thumbnail?: string;
 };
 
 export type FormValues = {
   title: string;
   creator: string;
-  isbn: string;
+  mangadexUuid: string;
   thumbnail: string;
 };
 
 export type BookSearchResult = {
   title: string;
   authors: string[];
-  isbn: string;
+  mangadexUuid: string;
   thumbnail?: string;
 };

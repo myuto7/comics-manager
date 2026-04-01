@@ -126,7 +126,7 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                 options={searchOptions}
                 getOptionLabel={(option) => option.title}
                 isOptionEqualToValue={(option, value) =>
-                  option.isbn === value.isbn
+                  option.mangadexUuid === value.mangadexUuid
                 }
                 loading={searching}
                 filterOptions={(x) => x}
@@ -134,7 +134,7 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                 onChange={(_, newValue) => {
                   setSelectedBook(newValue);
                   setValue("title", newValue?.title ?? "");
-                  setValue("isbn", newValue?.isbn ?? "");
+                  setValue("mangadexUuid", newValue?.mangadexUuid ?? "");
                   setValue("thumbnail", newValue?.thumbnail ?? "");
                 }}
                 onInputChange={(_, value, reason) => {
@@ -208,7 +208,7 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                         color="text.disabled"
                         display="block"
                       >
-                        ISBN: {option.isbn}
+                        MangaDex ID: {option.mangadexUuid}
                       </Typography>
                     </Box>
                   </Box>
