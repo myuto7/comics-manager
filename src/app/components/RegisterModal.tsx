@@ -45,7 +45,7 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
     }
     setSearching(true);
     try {
-      const res = await fetch(`/api/books?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`/api/mangadex?q=${encodeURIComponent(query)}`);
       const data: BookSearchResult[] = await res.json();
       setSearchOptions(data);
     } catch {
