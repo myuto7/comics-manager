@@ -14,7 +14,8 @@ export function useBookCover(title: string, isbn?: string) {
     fetch(`/api/books?q=${encodeURIComponent(query)}`)
       .then((res) => res.json())
       .then((data: { thumbnail?: string }[]) => {
-        setThumbnail(data[0]?.thumbnail ?? null);
+        const found = data.find((d) => d.thumbnail);
+        setThumbnail(found?.thumbnail ?? null);
         setLoading(false);
       })
       .catch(() => {

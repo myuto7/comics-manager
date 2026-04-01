@@ -11,7 +11,7 @@ export async function GET(req: Request) {
 
   try {
     const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&langRestrict=ja&maxResults=10`
+      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await res.json();
@@ -36,14 +36,22 @@ export async function GET(req: Request) {
 
         if (!isbn) return null;
 
+        const rawThumbnail = info.imageLinks?.thumbnail as string | undefined;
+        const thumbnail = rawThumbnail
+          ? rawThumbnail.replace(/^http:\/\//, "https://")
+          : undefined;
+
         return {
           title: info.title,
           authors: info.authors || [],
           isbn,
-          thumbnail: info.imageLinks?.thumbnail,
+          thumbnail,
         };
       })
       .filter(Boolean) as BookSearchResult[];
+
+    // 表紙ありを優先
+    results.sort((a, b) => (b.thumbnail ? 1 : 0) - (a.thumbnail ? 1 : 0));
 
     return NextResponse.json(results);
   } catch (error) {
