@@ -38,10 +38,18 @@ export async function GET(req: Request) {
       .map((manga: any): BookSearchResult | null => {
         const attrs = manga.attributes;
 
+        // altTitlesから日本語タイトルを検索
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const altTitles: Record<string, string>[] = attrs.altTitles ?? [];
+        const jaAltTitle =
+          altTitles.find((t) => t.ja)?.ja ??
+          altTitles.find((t) => t["ja-ro"])?.["ja-ro"];
+
         // 日本語タイトルを優先、なければ英語、なければ最初のもの
         const title =
           attrs.title?.ja ??
           attrs.title?.["ja-ro"] ??
+          jaAltTitle ??
           attrs.title?.en ??
           (Object.values(attrs.title ?? {}) as string[])[0];
 
