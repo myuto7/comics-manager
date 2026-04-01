@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 
-export function useBookCover(title: string) {
+export function useBookCover(title: string, isbn?: string) {
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!title) return;
+    if (!title && !isbn) {
+      setLoading(false);
+      return;
+    }
 
-    fetch(`/api/books?title=${encodeURIComponent(title)}`)
+    const query = isbn ? `isbn:${isbn}` : title;
+    fetch(`/api/books?q=${encodeURIComponent(query)}`)
       .then((res) => res.json())
-      .then((data) => {
-        setThumbnail(data.thumbnail);
+      .then((data: { thumbnail?: string }[]) => {
+        setThumbnail(data[0]?.thumbnail ?? null);
+        setLoading(false);
+      })
+      .catch(() => {
         setLoading(false);
       });
-  }, [title]);
+  }, [title, isbn]);
 
   return { thumbnail, loading };
 }

@@ -125,6 +125,9 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
               <Autocomplete
                 options={searchOptions}
                 getOptionLabel={(option) => option.title}
+                isOptionEqualToValue={(option, value) =>
+                  option.isbn === value.isbn
+                }
                 loading={searching}
                 filterOptions={(x) => x}
                 value={selectedBook}
@@ -145,21 +148,45 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                     key={option.isbn}
                     sx={{ gap: 1.5, alignItems: "flex-start !important" }}
                   >
-                    {option.thumbnail && (
-                      <Box
-                        component="img"
-                        src={option.thumbnail}
-                        alt={option.title}
-                        sx={{
-                          width: 36,
-                          height: 50,
-                          objectFit: "cover",
-                          borderRadius: 0.5,
-                          flexShrink: 0,
-                          mt: 0.5,
-                        }}
-                      />
-                    )}
+                    <Box
+                      sx={{
+                        width: 36,
+                        height: 50,
+                        flexShrink: 0,
+                        mt: 0.5,
+                        borderRadius: 0.5,
+                        overflow: "hidden",
+                        bgcolor: "grey.200",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {option.thumbnail ? (
+                        <Box
+                          component="img"
+                          src={option.thumbnail}
+                          alt={option.title}
+                          sx={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <Typography
+                          variant="caption"
+                          color="text.disabled"
+                          fontSize={9}
+                          textAlign="center"
+                          lineHeight={1.2}
+                        >
+                          No
+                          <br />
+                          Image
+                        </Typography>
+                      )}
+                    </Box>
                     <Box>
                       <Typography
                         variant="body2"

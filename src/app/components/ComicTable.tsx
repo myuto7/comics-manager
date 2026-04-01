@@ -59,7 +59,7 @@ export default function ComicTable({ comics }: Props) {
 }
 
 function ComicRow({ comic, index }: { comic: Comic; index: number }) {
-  const { thumbnail, loading } = useBookCover(comic.title);
+  const { thumbnail, loading } = useBookCover(comic.title, comic.isbn);
 
   return (
     <TableRow
