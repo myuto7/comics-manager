@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { BookSearchResult, FormValues } from "../type";
 import { useForm } from "react-hook-form";
 
@@ -142,11 +142,13 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                     searchBooks(value);
                   }
                 }}
-                renderOption={(props, option) => (
+                renderOption={(props, option) => {
+                  const { key, ...rest } = props as typeof props & { key: React.Key };
+                  return (
                   <Box
+                    key={key}
                     component="li"
-                    {...props}
-                    key={option.isbn}
+                    {...rest}
                     sx={{ gap: 1.5, alignItems: "flex-start !important" }}
                   >
                     <Box
@@ -210,7 +212,8 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                       </Typography>
                     </Box>
                   </Box>
-                )}
+                  );
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
