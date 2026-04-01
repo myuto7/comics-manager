@@ -11,8 +11,7 @@ export async function GET(req: Request) {
 
   try {
     const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
-    const isIsbnSearch = query.startsWith("isbn:");
-    const apiQuery = isIsbnSearch ? query : `${query}+subject:comics`;
+    const apiQuery = query;
 
     const url = new URL("https://www.googleapis.com/books/v1/volumes");
     url.searchParams.set("q", apiQuery);
