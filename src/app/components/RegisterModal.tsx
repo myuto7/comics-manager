@@ -135,6 +135,7 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                   setSelectedBook(newValue);
                   setValue("title", newValue?.title ?? "");
                   setValue("isbn", newValue?.isbn ?? "");
+                  setValue("thumbnail", newValue?.thumbnail ?? "");
                 }}
                 onInputChange={(_, value, reason) => {
                   if (reason === "input") {

@@ -4,12 +4,14 @@ export type Comic = {
   creator: string;
   isPurchased: boolean;
   isbn?: string;
+  thumbnail?: string;
 };
 
 export type FormValues = {
   title: string;
   creator: string;
   isbn: string;
+  thumbnail: string;
 };
 
 export type BookSearchResult = {

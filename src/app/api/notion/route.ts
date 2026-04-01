@@ -33,6 +33,7 @@ export async function GET() {
         isPurchased: page.properties["購入済み"].checkbox ?? false,
         isbn:
           page.properties["ISBN"]?.rich_text[0]?.text?.content || undefined,
+        thumbnail: page.properties["表紙URL"]?.url || undefined,
       })
     );
 
@@ -44,7 +45,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { title, creator, isbn } = await req.json();
+  const { title, creator, isbn, thumbnail } = await req.json();
 
   try {
     // Notionに登録
@@ -81,6 +82,9 @@ export async function POST(req: Request) {
             },
           ],
         },
+        表紙URL: {
+          url: thumbnail || null,
+        },
       },
     });
 
@@ -91,6 +95,7 @@ export async function POST(req: Request) {
         title,
         creator,
         isbn,
+        thumbnail,
       }),
     });
 

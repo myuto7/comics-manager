@@ -10,12 +10,10 @@ import Paper from "@mui/material/Paper";
 import {
   Box,
   Checkbox,
-  CircularProgress,
   Link,
   Typography,
 } from "@mui/material";
 import { Comic } from "../type";
-import { useBookCover } from "../hooks/useBookCover";
 
 type Props = {
   comics: Comic[];
@@ -59,8 +57,6 @@ export default function ComicTable({ comics }: Props) {
 }
 
 function ComicRow({ comic, index }: { comic: Comic; index: number }) {
-  const { thumbnail, loading } = useBookCover(comic.title, comic.isbn);
-
   return (
     <TableRow
       key={comic.id}
@@ -71,10 +67,8 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
       }}
     >
       <TableCell>
-        {loading ? (
-          <CircularProgress size={24} />
-        ) : thumbnail ? (
-          <img src={thumbnail} alt={comic.title} width={50} />
+        {comic.thumbnail ? (
+          <img src={comic.thumbnail} alt={comic.title} width={50} />
         ) : (
           <span>なし</span>
         )}
