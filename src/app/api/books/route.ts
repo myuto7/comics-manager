@@ -10,9 +10,19 @@ export async function GET(req: Request) {
   }
 
   try {
-    const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`
-    );
+    const apiKey = process.env.GOOGLE_BOOKS_API_KEY;
+    const url = new URL("https://www.googleapis.com/books/v1/volumes");
+    url.searchParams.set("q", query);
+    url.searchParams.set("maxResults", "20");
+    if (apiKey) url.searchParams.set("key", apiKey);
+
+    const res = await fetch(url.toString());
+
+    if (!res.ok) {
+      console.error(`Google Books API error: ${res.status}`);
+      return NextResponse.json([]);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await res.json();
 
