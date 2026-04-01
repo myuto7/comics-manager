@@ -17,6 +17,7 @@ export async function GET(req: Request) {
     url.searchParams.append("includes[]", "author");
     url.searchParams.append("contentRating[]", "safe");
     url.searchParams.append("contentRating[]", "suggestive");
+    url.searchParams.append("originalLanguage[]", "ja");
 
     const res = await fetch(url.toString());
 
