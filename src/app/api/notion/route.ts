@@ -32,7 +32,8 @@ export async function GET() {
         creator: page.properties["入力者"].rich_text[0].text.content ?? "",
         isPurchased: page.properties["購入済み"].checkbox ?? false,
         mangadexUuid:
-          page.properties["MangaDexUUID"]?.rich_text[0]?.text?.content || undefined,
+          page.properties["MangaDexUUID"]?.rich_text[0]?.text?.content ||
+          undefined,
         thumbnail: page.properties["表紙URL"]?.url || undefined,
       })
     );
