@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Comic } from "../type";
+import Image from "next/image";
 
 type Props = {
   comics: Comic[];
@@ -69,7 +70,12 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
     >
       <TableCell>
         {comic.thumbnail ? (
-          <img src={comic.thumbnail} alt={comic.title} width={50} />
+          <Image
+            src={comic.thumbnail}
+            alt={comic.title}
+            width={50}
+            height={75}
+          />
         ) : (
           <span>なし</span>
         )}
