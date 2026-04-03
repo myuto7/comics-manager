@@ -1,0 +1,8 @@
+# このファイルをコピーして terraform.tfvars を作成し、実際の値を入力してください
+# terraform.tfvars は .gitignore に含まれているためコミットされません
+
+aws_region   = "ap-northeast-1"
+project_name = "comics-manager"
+
+# LINE Messaging API > Channel Access Token
+line_channel_access_token = "YOUR_LINE_CHANNEL_ACCESS_TOKEN"

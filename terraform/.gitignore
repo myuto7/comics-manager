@@ -1,0 +1,15 @@
+# Terraform の機密ファイル・生成物
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
+
+# Terraform のローカルディレクトリ
+.terraform/
+.terraform.lock.hcl
+
+# State ファイル（S3 バックエンドを使うためローカルには残さない）
+*.tfstate
+*.tfstate.backup
+
+# Lambda の ZIP（terraform apply 時に自動生成される）
+lambda_function.zip
