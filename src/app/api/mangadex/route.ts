@@ -39,7 +39,6 @@ export async function GET(req: Request) {
         const attrs = manga.attributes;
 
         // altTitlesから日本語タイトルを検索
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const altTitles: Record<string, string>[] = attrs.altTitles ?? [];
         const jaAltTitle =
           altTitles.find((t) => t.ja)?.ja ??
