@@ -31,19 +31,19 @@ export default function ComicTable({ comics }: Props) {
 
   return (
     <TableContainer component={Paper} elevation={2}>
-      <Table aria-label="simple table">
+      <Table aria-label="simple table" size="small">
         <TableHead>
           <TableRow sx={{ bgcolor: "primary.main" }}>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
               表紙
             </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", width: "50%" }}>
+            <TableCell sx={{ color: "#fff", fontWeight: "bold", width: "50%", px: 1 }}>
               タイトル
             </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1, whiteSpace: "nowrap" }}>
               入力者
             </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
               購入
             </TableCell>
           </TableRow>
@@ -68,7 +68,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
         "&:last-child td, &:last-child th": { border: 0 },
       }}
     >
-      <TableCell>
+      <TableCell sx={{ px: 1 }}>
         {comic.thumbnail ? (
           <Image
             src={comic.thumbnail}
@@ -80,7 +80,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
           <span>なし</span>
         )}
       </TableCell>
-      <TableCell component="th" scope="row">
+      <TableCell component="th" scope="row" sx={{ px: 1 }}>
         <Link
           href={`https://piccoma.com/web/search/result?word=${comic.title}`}
           target="_blank"
@@ -92,12 +92,12 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
           {comic.title}
         </Link>
       </TableCell>
-      <TableCell>
+      <TableCell sx={{ px: 1, whiteSpace: "nowrap" }}>
         <Typography variant="body2" color="text.secondary">
           {comic.creator || "—"}
         </Typography>
       </TableCell>
-      <TableCell>
+      <TableCell sx={{ px: 1 }}>
         <Checkbox checked={comic.isPurchased} disabled />
       </TableCell>
     </TableRow>
