@@ -143,75 +143,77 @@ export const RegisterModal = ({ onRegisterSuccess }: Props) => {
                   }
                 }}
                 renderOption={(props, option) => {
-                  const { key, ...rest } = props as typeof props & { key: React.Key };
+                  const { key, ...rest } = props as typeof props & {
+                    key: React.Key;
+                  };
                   return (
-                  <Box
-                    key={key}
-                    component="li"
-                    {...rest}
-                    sx={{ gap: 1.5, alignItems: "flex-start !important" }}
-                  >
                     <Box
-                      sx={{
-                        width: 36,
-                        height: 50,
-                        flexShrink: 0,
-                        mt: 0.5,
-                        borderRadius: 0.5,
-                        overflow: "hidden",
-                        bgcolor: "grey.200",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
+                      key={key}
+                      component="li"
+                      {...rest}
+                      sx={{ gap: 1.5, alignItems: "flex-start !important" }}
                     >
-                      {option.thumbnail ? (
-                        <Box
-                          component="img"
-                          src={option.thumbnail}
-                          alt={option.title}
-                          sx={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
+                      <Box
+                        sx={{
+                          width: 36,
+                          height: 50,
+                          flexShrink: 0,
+                          mt: 0.5,
+                          borderRadius: 0.5,
+                          overflow: "hidden",
+                          bgcolor: "grey.200",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {option.thumbnail ? (
+                          <Box
+                            component="img"
+                            src={option.thumbnail}
+                            alt={option.title}
+                            sx={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <Typography
+                            variant="caption"
+                            color="text.disabled"
+                            fontSize={9}
+                            textAlign="center"
+                            lineHeight={1.2}
+                          >
+                            No
+                            <br />
+                            Image
+                          </Typography>
+                        )}
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant="body2"
+                          fontWeight={500}
+                          lineHeight={1.4}
+                        >
+                          {option.title}
+                        </Typography>
+                        {option.authors.length > 0 && (
+                          <Typography variant="caption" color="text.secondary">
+                            {option.authors.join(", ")}
+                          </Typography>
+                        )}
                         <Typography
                           variant="caption"
                           color="text.disabled"
-                          fontSize={9}
-                          textAlign="center"
-                          lineHeight={1.2}
+                          display="block"
                         >
-                          No
-                          <br />
-                          Image
+                          MangaDex ID: {option.mangadexUuid}
                         </Typography>
-                      )}
+                      </Box>
                     </Box>
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        fontWeight={500}
-                        lineHeight={1.4}
-                      >
-                        {option.title}
-                      </Typography>
-                      {option.authors.length > 0 && (
-                        <Typography variant="caption" color="text.secondary">
-                          {option.authors.join(", ")}
-                        </Typography>
-                      )}
-                      <Typography
-                        variant="caption"
-                        color="text.disabled"
-                        display="block"
-                      >
-                        MangaDex ID: {option.mangadexUuid}
-                      </Typography>
-                    </Box>
-                  </Box>
                   );
                 }}
                 renderInput={(params) => (

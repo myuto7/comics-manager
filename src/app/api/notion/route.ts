@@ -93,6 +93,7 @@ export async function POST(req: Request) {
     const command = new SendMessageCommand({
       QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
       MessageBody: JSON.stringify({
+        type: "register",
         title,
         creator,
         mangadexUuid,
