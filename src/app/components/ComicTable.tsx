@@ -37,10 +37,19 @@ export default function ComicTable({ comics }: Props) {
             <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
               表紙
             </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", width: "50%", px: 1 }}>
+            <TableCell
+              sx={{ color: "#fff", fontWeight: "bold", width: "50%", px: 1 }}
+            >
               タイトル
             </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1, whiteSpace: "nowrap" }}>
+            <TableCell
+              sx={{
+                color: "#fff",
+                fontWeight: "bold",
+                px: 1,
+                whiteSpace: "nowrap",
+              }}
+            >
               入力者
             </TableCell>
             <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
@@ -77,7 +86,9 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
             height={75}
           />
         ) : (
-          <span>なし</span>
+          <Typography variant="body2" textAlign="center">
+            なし
+          </Typography>
         )}
       </TableCell>
       <TableCell component="th" scope="row" sx={{ px: 1 }}>
