@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { BookSearchResult } from "@/app/type";
+import { parseMangaItem } from "@/lib/mangadex";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -26,7 +27,6 @@ export async function GET(req: Request) {
       return NextResponse.json([]);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await res.json();
 
     if (data.result !== "ok" || !data.data) {
@@ -34,49 +34,7 @@ export async function GET(req: Request) {
     }
 
     const results: BookSearchResult[] = data.data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((manga: any): BookSearchResult | null => {
-        const attrs = manga.attributes;
-
-        // altTitlesから日本語タイトルを検索
-        const altTitles: Record<string, string>[] = attrs.altTitles ?? [];
-        const jaAltTitle =
-          altTitles.find((t) => t.ja)?.ja ??
-          altTitles.find((t) => t["ja-ro"])?.["ja-ro"];
-
-        // 日本語タイトルを優先、なければ英語、なければ最初のもの
-        const title =
-          attrs.title?.ja ??
-          attrs.title?.["ja-ro"] ??
-          jaAltTitle ??
-          attrs.title?.en ??
-          (Object.values(attrs.title ?? {}) as string[])[0];
-
-        if (!title) return null;
-
-        const authors: string[] = manga.relationships
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .filter((r: any) => r.type === "author")
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((r: any) => r.attributes?.name as string | undefined)
-          .filter(Boolean);
-
-        const coverRel = manga.relationships.find(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (r: any) => r.type === "cover_art"
-        );
-        const fileName: string | undefined = coverRel?.attributes?.fileName;
-        const thumbnail = fileName
-          ? `https://uploads.mangadex.org/covers/${manga.id}/${fileName}.256.jpg`
-          : undefined;
-
-        return {
-          title,
-          authors,
-          mangadexUuid: manga.id,
-          thumbnail,
-        };
-      })
+      .map((manga: any) => parseMangaItem(manga))
       .filter(Boolean) as BookSearchResult[];
 
     return NextResponse.json(results);
