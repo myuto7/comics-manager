@@ -1,6 +1,11 @@
 "use client";
 
-import { ThemeProvider, createTheme, CssBaseline, GlobalStyles } from "@mui/material";
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  GlobalStyles,
+} from "@mui/material";
 
 const theme = createTheme({
   palette: {
