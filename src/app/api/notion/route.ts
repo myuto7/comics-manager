@@ -93,6 +93,7 @@ export async function POST(req: Request) {
     const command = new SendMessageCommand({
       QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
       MessageBody: JSON.stringify({
+        type: "register",
         title,
         creator,
         mangadexUuid,
@@ -101,6 +102,40 @@ export async function POST(req: Request) {
     });
 
     await sqsClient.send(command);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  const { id, isPurchased, title } = await req.json();
+
+  try {
+    // Notionの購入済みチェックボックスを更新
+    await notion.pages.update({
+      page_id: id,
+      properties: {
+        購入済み: {
+          checkbox: isPurchased,
+        },
+      },
+    });
+
+    // 購入済みになった場合のみLINE通知を送信
+    if (isPurchased) {
+      const command = new SendMessageCommand({
+        QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+        MessageBody: JSON.stringify({
+          type: "purchase",
+          title,
+        }),
+      });
+
+      await sqsClient.send(command);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -11,23 +11,31 @@ import https from 'https';
  *   "thumbnail": "https://..."  // optional
  * }
  */
+function buildLineMessage(type, message) {
+  if (type === 'purchase') {
+    return `漫画が購入されました！\n\nタイトル: ${message.title}`;
+  }
+  // type === 'register' またはデフォルト（後方互換）
+  return message.creator
+    ? `新しい漫画が登録されました！\n\nタイトル: ${message.title}\n入力者: ${message.creator}`
+    : `新しい漫画が登録されました！\n\nタイトル: ${message.title}`;
+}
+
 export const handler = async (event) => {
   const channelAccessToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
-  
+
   console.log('Received event:', JSON.stringify(event, null, 2));
-  
+
   // SQSからメッセージを取得
   for (const record of event.Records) {
     const message = JSON.parse(record.body);
-    const { title, creator } = message;
-    
-    console.log('Processing message:', { title, creator });
-    
-    // LINE通知メッセージを作成（シンプルな形式）
-    const lineMessage = creator 
-      ? `新しい漫画が登録されました！\n\nタイトル: ${title}\n入力者: ${creator}`
-      : `新しい漫画が登録されました！\n\nタイトル: ${title}`;
-        
+    const { type } = message;
+
+    console.log('Processing message:', message);
+
+    // LINE通知メッセージを作成
+    const lineMessage = buildLineMessage(type, message);
+
     // LINE Messaging APIにリクエスト送信
     await sendLineNotification(channelAccessToken, lineMessage);
   }
