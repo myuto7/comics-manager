@@ -25,7 +25,6 @@ export async function GET() {
     });
 
     const data = response.results.map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (page: any): Comic => ({
         id: page.id,
         title: page.properties["タイトル"].title[0].text.content ?? "",
