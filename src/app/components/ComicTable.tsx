@@ -77,7 +77,11 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
     await fetch("/api/notion", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: comic.id, isPurchased: newValue }),
+      body: JSON.stringify({
+        id: comic.id,
+        title: comic.title,
+        isPurchased: newValue,
+      }),
     });
   };
 

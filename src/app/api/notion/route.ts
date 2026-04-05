@@ -110,7 +110,7 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const { id, isPurchased } = await req.json();
+  const { id, title, isPurchased } = await req.json();
 
   await notion.pages.update({
     page_id: id,
@@ -120,6 +120,16 @@ export async function PATCH(req: Request) {
       },
     },
   });
+
+  const command = new SendMessageCommand({
+    QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+    MessageBody: JSON.stringify({
+      type: "purchase",
+      title,
+    }),
+  });
+
+  await sqsClient.send(command);
 
   return NextResponse.json({ success: true });
 }
