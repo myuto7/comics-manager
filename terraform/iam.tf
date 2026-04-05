@@ -110,6 +110,7 @@ resource "aws_iam_policy" "terraform" {
           "sqs:ListQueues",
           "sqs:TagQueue",
           "sqs:UntagQueue",
+          "sqs:ListQueueTags",
         ]
         Resource = "*"
       },
@@ -133,6 +134,8 @@ resource "aws_iam_policy" "terraform" {
           "lambda:TagResource",
           "lambda:UntagResource",
           "lambda:ListTags",
+          "lambda:ListVersionsByFunction",
+          "lambda:GetFunctionCodeSigningConfig",
         ]
         Resource = "*"
       },
