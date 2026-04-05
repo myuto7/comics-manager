@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Comic } from "../type";
 import Image from "next/image";
+import { useState } from "react";
 
 type Props = {
   comics: Comic[];
@@ -68,6 +69,18 @@ export default function ComicTable({ comics }: Props) {
 }
 
 function ComicRow({ comic, index }: { comic: Comic; index: number }) {
+  const [isPurchased, setIsPurchased] = useState(comic.isPurchased);
+  const handleCheck = async () => {
+    const newValue = !isPurchased;
+    setIsPurchased(newValue);
+
+    await fetch("/api/notion", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: comic.id, isPurchased: newValue }),
+    });
+  };
+
   return (
     <TableRow
       key={comic.id}
@@ -109,7 +122,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
         </Typography>
       </TableCell>
       <TableCell sx={{ px: 1 }}>
-        <Checkbox checked={comic.isPurchased} disabled />
+        <Checkbox checked={isPurchased} onChange={handleCheck} />
       </TableCell>
     </TableRow>
   );

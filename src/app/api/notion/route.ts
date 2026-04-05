@@ -108,3 +108,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
+
+export async function PATCH(req: Request) {
+  const { id, isPurchased } = await req.json();
+
+  await notion.pages.update({
+    page_id: id,
+    properties: {
+      購入済み: {
+        checkbox: isPurchased,
+      },
+    },
+  });
+
+  return NextResponse.json({ success: true });
+}
