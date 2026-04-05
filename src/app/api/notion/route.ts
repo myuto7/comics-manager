@@ -108,3 +108,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
+
+export async function PATCH(req: Request) {
+  const { id, title, isPurchased } = await req.json();
+
+  await notion.pages.update({
+    page_id: id,
+    properties: {
+      購入済み: {
+        checkbox: isPurchased,
+      },
+    },
+  });
+
+  const command = new SendMessageCommand({
+    QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+    MessageBody: JSON.stringify({
+      type: "purchase",
+      title,
+    }),
+  });
+
+  await sqsClient.send(command);
+
+  return NextResponse.json({ success: true });
+}
