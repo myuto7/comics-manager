@@ -8,8 +8,8 @@ data "archive_file" "lambda_zip" {
 resource "aws_lambda_function" "line_notification" {
   function_name    = "${var.project_name}-line-notification"
   role             = aws_iam_role.lambda.arn
-  handler          = "index.handler"  # index.mjs の handler 関数を指す
-  runtime          = "nodejs20.x"
+  handler          = "index.handler" # index.mjs の handler 関数を指す
+  runtime          = "nodejs22.x"
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
