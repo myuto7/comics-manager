@@ -7,16 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {
-  Box,
-  Checkbox,
-  CircularProgress,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, CircularProgress, Typography } from "@mui/material";
 import { Comic } from "../type";
 import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 
 type Props = {
   comics: Comic[];
@@ -109,15 +104,10 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
         )}
       </TableCell>
       <TableCell component="th" scope="row" sx={{ px: 1 }}>
-        <Link
-          href={`https://piccoma.com/web/search/result?word=${comic.title}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          underline="hover"
-          color="primary"
-          fontWeight={500}
-        >
-          {comic.title}
+        <Link href={`/comics/${comic.id}`} style={{ textDecoration: "none" }}>
+          <Typography color="primary" fontWeight={500}>
+            {comic.title}
+          </Typography>
         </Link>
       </TableCell>
       <TableCell sx={{ px: 1, whiteSpace: "nowrap" }}>
