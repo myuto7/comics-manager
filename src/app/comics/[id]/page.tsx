@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Comic } from "@/app/type";
 import { Box } from "@mui/material";
+import DeleteButton from "./DeleteButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -46,6 +47,7 @@ export default async function ComicDetailPage({ params }: Props) {
         ピッコマで見る →
       </a>
       <p>購入済み: {comic.isPurchased ? "✅" : "❌"}</p>
+      <DeleteButton id={comic.id} title={comic.title} />
     </main>
   );
 }

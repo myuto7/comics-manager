@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { Comic } from "@/app/type";
+import { Delete } from "@mui/icons-material";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -130,6 +131,17 @@ export async function PATCH(req: Request) {
   });
 
   await sqsClient.send(command);
+
+  return NextResponse.json({ success: true });
+}
+
+export async function DELETE(req: Request) {
+  const { id } = await req.json();
+
+  await notion.pages.update({
+    page_id: id,
+    archived: true,
+  });
 
   return NextResponse.json({ success: true });
 }
