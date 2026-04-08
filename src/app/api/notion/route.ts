@@ -89,7 +89,7 @@ export async function POST(req: Request) {
     });
 
     // SQSにメッセージを送信（LINE通知用）
-    if (process.env.NOTIFICATIONS_ENABLED) {
+    if (process.env.NOTIFICATIONS_ENABLED === "true") {
       const command = new SendMessageCommand({
         QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
         MessageBody: JSON.stringify({
@@ -123,7 +123,7 @@ export async function PATCH(req: Request) {
     },
   });
 
-  if (process.env.NOTIFICATIONS_ENABLED) {
+  if (process.env.NOTIFICATIONS_ENABLED === "true") {
     const command = new SendMessageCommand({
       QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
       MessageBody: JSON.stringify({
