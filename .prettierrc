@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json.schemastore.org/prettierrc",
+    "$schema": "https://json.schemastore.org/prettierrc",
     "printWidth": 80,
     "useTabs": false,
     "semi": true,
@@ -7,5 +7,8 @@
     "trailingComma": "es5",
     "bracketSpacing": true,
     "jsxBracketSameLine": false,
-    "endOfLine": "lf"
+    "endOfLine": "lf",
+    "plugins": [
+        "prettier-plugin-organize-imports"
+    ]
 }

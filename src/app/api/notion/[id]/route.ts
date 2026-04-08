@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { getComicById } from "@/lib/notion";
+import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,

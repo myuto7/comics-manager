@@ -1,10 +1,10 @@
 "use client";
 
-import { Box, Container, Typography, AppBar, Toolbar } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import ComicTable from "./components/ComicTable";
 import { RegisterModal } from "./components/RegisterModal";
-import { useState, useEffect } from "react";
 import { Comic } from "./type";
 
 export default function Home() {

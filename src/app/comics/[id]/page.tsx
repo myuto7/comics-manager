@@ -1,10 +1,9 @@
-import { notFound } from "next/navigation";
-import { Comic } from "@/app/type";
-import { Box } from "@mui/material";
-import DeleteButton from "./DeleteButton";
-import { getComicById } from "@/lib/notion";
 import { getMangaDescription } from "@/lib/mangadex";
+import { getComicById } from "@/lib/notion";
+import { Box } from "@mui/material";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import DeleteButton from "./DeleteButton";
 
 type Props = {
   params: Promise<{ id: string }>;

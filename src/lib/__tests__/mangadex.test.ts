@@ -126,7 +126,10 @@ describe("parseMangaItem", () => {
 
   describe("mangadexUuid", () => {
     it("manga.id が mangadexUuid にマッピングされる", () => {
-      const manga = buildManga({ id: "unique-id-xyz", title: { ja: "タイトル" } });
+      const manga = buildManga({
+        id: "unique-id-xyz",
+        title: { ja: "タイトル" },
+      });
       const result = parseMangaItem(manga);
       expect(result?.mangadexUuid).toBe("unique-id-xyz");
     });

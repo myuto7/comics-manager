@@ -1,5 +1,5 @@
-import { Client } from "@notionhq/client";
 import { Comic } from "@/app/type";
+import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 

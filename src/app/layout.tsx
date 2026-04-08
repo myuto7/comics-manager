@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     siteName: "漫画購入管理",
     images: [
       {
-        url: "https://comics-manager.vercel.app/ogp.svg",
+        url: "https://comics-manager.vercel.app/og.PNG",
         width: 1200,
         height: 630,
         alt: "漫画購入管理",

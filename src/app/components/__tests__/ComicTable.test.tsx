@@ -1,6 +1,6 @@
+import { Comic } from "@/app/type";
 import { render, screen } from "@testing-library/react";
 import ComicTable from "../ComicTable";
-import { Comic } from "@/app/type";
 
 // next/image はテスト環境では動作しないためシンプルな img に置き換える
 jest.mock("next/image", () => ({

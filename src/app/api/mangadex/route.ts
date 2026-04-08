@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { BookSearchResult } from "@/app/type";
 import { parseMangaItem } from "@/lib/mangadex";
+import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

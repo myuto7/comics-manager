@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  ThemeProvider,
   createTheme,
   CssBaseline,
   GlobalStyles,
+  ThemeProvider,
 } from "@mui/material";
 
 const theme = createTheme({

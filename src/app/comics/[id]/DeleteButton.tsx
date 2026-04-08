@@ -1,7 +1,7 @@
 "use client";
 
-import { Button, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 type Props = {
