@@ -9,17 +9,17 @@ type Props = {
 
 export default async function ComicDetailPage({ params }: Props) {
   const { id } = await params;
-  const comicRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/notion/${id}`
-  );
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_BASE_URL;
+  const comicRes = await fetch(`${baseUrl}/api/notion/${id}`);
   const comic: Comic = await comicRes.json();
   if (!comic) notFound();
 
   let description = null;
-  console.log(comic);
   if (comic.mangadexUuid) {
     const mangaRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mangadex/${comic.mangadexUuid}`
+      `${baseUrl}/api/mangadex/${comic.mangadexUuid}`
     );
     const mangaData = await mangaRes.json();
     description = mangaData.description;
