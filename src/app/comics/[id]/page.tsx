@@ -1,6 +1,7 @@
 import { getMangaDescription } from "@/lib/mangadex";
 import { getComicById } from "@/lib/notion";
 import { Box } from "@mui/material";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import DeleteButton from "./DeleteButton";
 
@@ -23,7 +24,12 @@ export default async function ComicDetailPage({ params }: Props) {
       <h1>{comic.title}</h1>
       {comic.thumbnail && (
         <Box textAlign="center">
-          <img src={comic.thumbnail} alt={comic.title} width={200} />
+          <Image
+            src={comic.thumbnail}
+            alt={comic.title}
+            width={200}
+            height={314}
+          />
         </Box>
       )}
       {description && (
