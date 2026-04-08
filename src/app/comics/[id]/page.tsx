@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { Comic } from "@/app/type";
 import { Box } from "@mui/material";
+import DeleteButton from "./DeleteButton";
+import { getComicById } from "@/lib/notion";
+import { getMangaDescription } from "@/lib/mangadex";
+import Image from "next/image";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -8,19 +12,12 @@ type Props = {
 
 export default async function ComicDetailPage({ params }: Props) {
   const { id } = await params;
-  const comicRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/notion/${id}`
-  );
-  const comic: Comic = await comicRes.json();
+  const comic = await getComicById(id);
   if (!comic) notFound();
 
   let description = null;
   if (comic.mangadexUuid) {
-    const mangaRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/mangadex/${comic.mangadexUuid}`
-    );
-    const mangaData = await mangaRes.json();
-    description = mangaData.description;
+    description = await getMangaDescription(comic.mangadexUuid);
   }
 
   return (
@@ -28,7 +25,7 @@ export default async function ComicDetailPage({ params }: Props) {
       <h1>{comic.title}</h1>
       {comic.thumbnail && (
         <Box textAlign="center">
-          <img src={comic.thumbnail} alt={comic.title} width={200} />
+          <Image src={comic.thumbnail} alt={comic.title} width={200} />
         </Box>
       )}
       {description && (
@@ -45,6 +42,7 @@ export default async function ComicDetailPage({ params }: Props) {
         ピッコマで見る →
       </a>
       <p>購入済み: {comic.isPurchased ? "✅" : "❌"}</p>
+      <DeleteButton id={comic.id} title={comic.title} />
     </main>
   );
 }

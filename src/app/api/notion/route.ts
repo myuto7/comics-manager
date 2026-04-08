@@ -137,3 +137,14 @@ export async function PATCH(req: Request) {
 
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(req: Request) {
+  const { id } = await req.json();
+
+  await notion.pages.update({
+    page_id: id,
+    archived: true,
+  });
+
+  return NextResponse.json({ success: true });
+}
