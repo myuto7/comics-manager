@@ -1,0 +1,22 @@
+import { Client } from "@notionhq/client";
+import { Comic } from "@/app/type";
+
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
+export async function getComicById(id: string): Promise<Comic | null> {
+  try {
+    const page = (await notion.pages.retrieve({ page_id: id })) as any;
+
+    return {
+      id: page.id,
+      title: page.properties["タイトル"].title[0].text.content ?? "",
+      creator: page.properties["入力者"].rich_text[0]?.text.content ?? "",
+      isPurchased: page.properties["購入済み"].checkbox ?? false,
+      thumbnail: page.properties["表紙URL"]?.url || null,
+      mangadexUuid:
+        page.properties["MangaDexUUID"].rich_text[0]?.text.content ?? "",
+    };
+  } catch {
+    return null;
+  }
+}

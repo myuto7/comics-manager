@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { Comic } from "@/app/type";
 import { Box } from "@mui/material";
 import DeleteButton from "./DeleteButton";
+import { getComicById } from "@/lib/notion";
+import { getMangaDescription } from "@/lib/mangadex";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -9,20 +11,12 @@ type Props = {
 
 export default async function ComicDetailPage({ params }: Props) {
   const { id } = await params;
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NEXT_PUBLIC_BASE_URL;
-  const comicRes = await fetch(`${baseUrl}/api/notion/${id}`);
-  const comic: Comic = await comicRes.json();
+  const comic = await getComicById(id);
   if (!comic) notFound();
 
   let description = null;
   if (comic.mangadexUuid) {
-    const mangaRes = await fetch(
-      `${baseUrl}/api/mangadex/${comic.mangadexUuid}`
-    );
-    const mangaData = await mangaRes.json();
-    description = mangaData.description;
+    description = await getMangaDescription(comic.mangadexUuid);
   }
 
   return (
