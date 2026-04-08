@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 import { Comic } from "@/app/type";
-import { Delete } from "@mui/icons-material";
 
 const notion = new Client({
   auth: process.env.NOTION_API_KEY,
