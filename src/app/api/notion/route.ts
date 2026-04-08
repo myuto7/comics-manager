@@ -89,18 +89,20 @@ export async function POST(req: Request) {
     });
 
     // SQSにメッセージを送信（LINE通知用）
-    const command = new SendMessageCommand({
-      QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
-      MessageBody: JSON.stringify({
-        type: "register",
-        title,
-        creator,
-        mangadexUuid,
-        thumbnail,
-      }),
-    });
+    if (process.env.NOTIFICATIONS_ENABLED) {
+      const command = new SendMessageCommand({
+        QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+        MessageBody: JSON.stringify({
+          type: "register",
+          title,
+          creator,
+          mangadexUuid,
+          thumbnail,
+        }),
+      });
 
-    await sqsClient.send(command);
+      await sqsClient.send(command);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -121,15 +123,17 @@ export async function PATCH(req: Request) {
     },
   });
 
-  const command = new SendMessageCommand({
-    QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
-    MessageBody: JSON.stringify({
-      type: "purchase",
-      title,
-    }),
-  });
+  if (process.env.NOTIFICATIONS_ENABLED) {
+    const command = new SendMessageCommand({
+      QueueUrl: process.env.AWS_SQS_QUEUE_URL!,
+      MessageBody: JSON.stringify({
+        type: "purchase",
+        title,
+      }),
+    });
 
-  await sqsClient.send(command);
+    await sqsClient.send(command);
+  }
 
   return NextResponse.json({ success: true });
 }
