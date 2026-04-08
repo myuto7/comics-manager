@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import DeleteButton from "./DeleteButton";
 import { getComicById } from "@/lib/notion";
 import { getMangaDescription } from "@/lib/mangadex";
+import Image from "next/image";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -24,7 +25,7 @@ export default async function ComicDetailPage({ params }: Props) {
       <h1>{comic.title}</h1>
       {comic.thumbnail && (
         <Box textAlign="center">
-          <img src={comic.thumbnail} alt={comic.title} width={200} />
+          <Image src={comic.thumbnail} alt={comic.title} width={200} />
         </Box>
       )}
       {description && (
