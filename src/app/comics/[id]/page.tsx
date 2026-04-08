@@ -15,7 +15,6 @@ export default async function ComicDetailPage({ params }: Props) {
   if (!comic) notFound();
 
   let description = null;
-  console.log(comic);
   if (comic.mangadexUuid) {
     const mangaRes = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/mangadex/${comic.mangadexUuid}`
