@@ -1,6 +1,12 @@
 "use client";
 
-import { Box, Checkbox, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,6 +24,11 @@ type Props = {
 };
 
 export default function ComicTable({ comics }: Props) {
+  const [page, setPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const currentComics = comics.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   if (!comics.length)
     return (
       <Box display="flex" justifyContent="center" py={6}>
@@ -26,40 +37,49 @@ export default function ComicTable({ comics }: Props) {
     );
 
   return (
-    <TableContainer component={Paper} elevation={2}>
-      <Table aria-label="simple table" size="small">
-        <TableHead>
-          <TableRow sx={{ bgcolor: "primary.main" }}>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
-              表紙
-            </TableCell>
-            <TableCell
-              sx={{ color: "#fff", fontWeight: "bold", width: "50%", px: 1 }}
-            >
-              タイトル
-            </TableCell>
-            <TableCell
-              sx={{
-                color: "#fff",
-                fontWeight: "bold",
-                px: 1,
-                whiteSpace: "nowrap",
-              }}
-            >
-              入力者
-            </TableCell>
-            <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
-              購入
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {comics.map((comic, index) => (
-            <ComicRow key={comic.id} comic={comic} index={index}></ComicRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper} elevation={2}>
+        <Table aria-label="simple table" size="small">
+          <TableHead>
+            <TableRow sx={{ bgcolor: "primary.main" }}>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
+                表紙
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", fontWeight: "bold", width: "50%", px: 1 }}
+              >
+                タイトル
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "#fff",
+                  fontWeight: "bold",
+                  px: 1,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                入力者
+              </TableCell>
+              <TableCell sx={{ color: "#fff", fontWeight: "bold", px: 1 }}>
+                購入
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentComics.map((comic, index) => (
+              <ComicRow key={comic.id} comic={comic} index={index}></ComicRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box display="flex" justifyContent="center" mt={2}>
+        <Pagination
+          count={Math.ceil(comics.length / ITEMS_PER_PAGE)}
+          page={page}
+          onChange={(_, value) => setPage(value)}
+        />
+      </Box>
+    </>
   );
 }
 
