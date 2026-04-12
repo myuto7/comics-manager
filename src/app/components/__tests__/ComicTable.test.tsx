@@ -1,6 +1,5 @@
 import { Comic } from "@/app/type";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import ComicTable from "../ComicTable";
 
 // next/image はテスト環境では動作しないためシンプルな img に置き換える
@@ -35,9 +34,9 @@ describe("ComicTable", () => {
     expect(screen.queryByText("進撃の巨人")).not.toBeInTheDocument();
   });
 
-  it("「購入済」タブを選択すると購入済みの漫画のみ表示される", async () => {
+  it("「購入済」タブを選択すると購入済みの漫画のみ表示される", () => {
     render(<ComicTable comics={mockComics} />);
-    await userEvent.click(screen.getByRole("tab", { name: "購入済" }));
+    fireEvent.click(screen.getByRole("tab", { name: "購入済" }));
     expect(screen.getByText("進撃の巨人")).toBeInTheDocument();
     expect(screen.queryByText("鬼滅の刃")).not.toBeInTheDocument();
   });
