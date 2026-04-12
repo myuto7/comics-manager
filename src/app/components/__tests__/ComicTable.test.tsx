@@ -1,5 +1,6 @@
 import { Comic } from "@/app/type";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ComicTable from "../ComicTable";
 
 // next/image はテスト環境では動作しないためシンプルな img に置き換える
@@ -28,16 +29,17 @@ const mockComics: Comic[] = [
 ];
 
 describe("ComicTable", () => {
-  it("コミックのタイトルが表示される", () => {
+  it("デフォルトでは「未購入」タブが選択され、未購入の漫画のみ表示される", () => {
     render(<ComicTable comics={mockComics} />);
-    expect(screen.getByText("進撃の巨人")).toBeInTheDocument();
     expect(screen.getByText("鬼滅の刃")).toBeInTheDocument();
+    expect(screen.queryByText("進撃の巨人")).not.toBeInTheDocument();
   });
 
-  it("入力者が表示される", () => {
+  it("「購入済」タブを選択すると購入済みの漫画のみ表示される", async () => {
     render(<ComicTable comics={mockComics} />);
-    expect(screen.getByText("諫山創")).toBeInTheDocument();
-    expect(screen.getByText("吾峠呼世晴")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("tab", { name: "購入済" }));
+    expect(screen.getByText("進撃の巨人")).toBeInTheDocument();
+    expect(screen.queryByText("鬼滅の刃")).not.toBeInTheDocument();
   });
 
   it("空配列を渡した場合はローディング（CircularProgress）が表示される", () => {

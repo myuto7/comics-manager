@@ -5,6 +5,8 @@ import {
   Checkbox,
   CircularProgress,
   Pagination,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -24,10 +26,23 @@ type Props = {
 };
 
 export default function ComicTable({ comics }: Props) {
+  const [tab, setTab] = useState<0 | 1>(0);
   const [page, setPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
+
+  const filteredComics = comics.filter((c) =>
+    tab === 0 ? !c.isPurchased : c.isPurchased
+  );
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentComics = comics.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentComics = filteredComics.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: 0 | 1) => {
+    setTab(newValue);
+    setPage(1);
+  };
 
   if (!comics.length)
     return (
@@ -38,6 +53,15 @@ export default function ComicTable({ comics }: Props) {
 
   return (
     <>
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        sx={{ mb: 1 }}
+        aria-label="購入状況タブ"
+      >
+        <Tab label="未購入" />
+        <Tab label="購入済" />
+      </Tabs>
       <TableContainer component={Paper} elevation={2}>
         <Table aria-label="simple table" size="small">
           <TableHead>
@@ -74,7 +98,7 @@ export default function ComicTable({ comics }: Props) {
       </TableContainer>
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
-          count={Math.ceil(comics.length / ITEMS_PER_PAGE)}
+          count={Math.ceil(filteredComics.length / ITEMS_PER_PAGE)}
           page={page}
           onChange={(_, value) => setPage(value)}
         />
