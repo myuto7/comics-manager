@@ -37,16 +37,8 @@ export default function Home() {
       </AppBar>
 
       <Container maxWidth="md">
-        <Box py={5}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={3}
-          >
-            <Typography variant="h5" fontWeight="bold" color="text.primary">
-              リスト
-            </Typography>
+        <Box py={3}>
+          <Box display="flex" alignItems="center" justifyContent="end">
             <RegisterModal onRegisterSuccess={fetchComics} />
           </Box>
           <ComicTable comics={comics} />
