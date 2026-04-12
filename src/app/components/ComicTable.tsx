@@ -5,6 +5,8 @@ import {
   Checkbox,
   CircularProgress,
   Pagination,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -16,7 +18,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Comic } from "../type";
 
 type Props = {
@@ -24,10 +26,34 @@ type Props = {
 };
 
 export default function ComicTable({ comics }: Props) {
+  const [tab, setTab] = useState<0 | 1>(0);
   const [page, setPage] = useState(1);
+  const [localComics, setLocalComics] = useState<Comic[]>(comics);
   const ITEMS_PER_PAGE = 10;
+
+  useEffect(() => {
+    setLocalComics(comics);
+  }, [comics]);
+
+  const handleToggle = (id: string) => {
+    setLocalComics((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, isPurchased: !c.isPurchased } : c))
+    );
+  };
+
+  const filteredComics = localComics.filter((c) =>
+    tab === 0 ? !c.isPurchased : c.isPurchased
+  );
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentComics = comics.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentComics = filteredComics.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: 0 | 1) => {
+    setTab(newValue);
+    setPage(1);
+  };
 
   if (!comics.length)
     return (
@@ -38,6 +64,15 @@ export default function ComicTable({ comics }: Props) {
 
   return (
     <>
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        sx={{ mb: 1 }}
+        aria-label="購入状況タブ"
+      >
+        <Tab label="未購入" />
+        <Tab label="購入済" />
+      </Tabs>
       <TableContainer component={Paper} elevation={2}>
         <Table aria-label="simple table" size="small">
           <TableHead>
@@ -67,14 +102,14 @@ export default function ComicTable({ comics }: Props) {
           </TableHead>
           <TableBody>
             {currentComics.map((comic, index) => (
-              <ComicRow key={comic.id} comic={comic} index={index}></ComicRow>
+              <ComicRow key={comic.id} comic={comic} index={index} onToggle={handleToggle} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
-          count={Math.ceil(comics.length / ITEMS_PER_PAGE)}
+          count={Math.ceil(filteredComics.length / ITEMS_PER_PAGE)}
           page={page}
           onChange={(_, value) => setPage(value)}
         />
@@ -83,11 +118,17 @@ export default function ComicTable({ comics }: Props) {
   );
 }
 
-function ComicRow({ comic, index }: { comic: Comic; index: number }) {
-  const [isPurchased, setIsPurchased] = useState(comic.isPurchased);
+function ComicRow({
+  comic,
+  index,
+  onToggle,
+}: {
+  comic: Comic;
+  index: number;
+  onToggle: (id: string) => void;
+}) {
   const handleCheck = async () => {
-    const newValue = !isPurchased;
-    setIsPurchased(newValue);
+    onToggle(comic.id);
 
     await fetch("/api/notion", {
       method: "PATCH",
@@ -95,7 +136,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
       body: JSON.stringify({
         id: comic.id,
         title: comic.title,
-        isPurchased: newValue,
+        isPurchased: !comic.isPurchased,
       }),
     });
   };
@@ -136,7 +177,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
         </Typography>
       </TableCell>
       <TableCell sx={{ px: 1 }}>
-        <Checkbox checked={isPurchased} onChange={handleCheck} />
+        <Checkbox checked={comic.isPurchased} onChange={handleCheck} />
       </TableCell>
     </TableRow>
   );
