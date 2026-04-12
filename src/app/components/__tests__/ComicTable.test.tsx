@@ -1,5 +1,5 @@
 import { Comic } from "@/app/type";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ComicTable from "../ComicTable";
 
 // next/image はテスト環境では動作しないためシンプルな img に置き換える
@@ -50,5 +50,22 @@ describe("ComicTable", () => {
   it("サムネイルがない場合は「なし」が表示される", () => {
     render(<ComicTable comics={mockComics} />);
     expect(screen.getByText("なし")).toBeInTheDocument();
+  });
+
+  it("チェックボックスをクリックすると漫画がタブ間を移動する", async () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    render(<ComicTable comics={mockComics} />);
+
+    // 未購入タブで「鬼滅の刃」が表示されている
+    expect(screen.getByText("鬼滅の刃")).toBeInTheDocument();
+
+    // チェックボックスをクリック（isPurchasedをtrueに切り替え）
+    const checkbox = screen.getByRole("checkbox");
+    fireEvent.click(checkbox);
+
+    // 「鬼滅の刃」が未購入タブから消える
+    await waitFor(() => {
+      expect(screen.queryByText("鬼滅の刃")).not.toBeInTheDocument();
+    });
   });
 });

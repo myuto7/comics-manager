@@ -18,7 +18,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Comic } from "../type";
 
 type Props = {
@@ -28,9 +28,20 @@ type Props = {
 export default function ComicTable({ comics }: Props) {
   const [tab, setTab] = useState<0 | 1>(0);
   const [page, setPage] = useState(1);
+  const [localComics, setLocalComics] = useState<Comic[]>(comics);
   const ITEMS_PER_PAGE = 10;
 
-  const filteredComics = comics.filter((c) =>
+  useEffect(() => {
+    setLocalComics(comics);
+  }, [comics]);
+
+  const handleToggle = (id: string) => {
+    setLocalComics((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, isPurchased: !c.isPurchased } : c))
+    );
+  };
+
+  const filteredComics = localComics.filter((c) =>
     tab === 0 ? !c.isPurchased : c.isPurchased
   );
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -91,7 +102,7 @@ export default function ComicTable({ comics }: Props) {
           </TableHead>
           <TableBody>
             {currentComics.map((comic, index) => (
-              <ComicRow key={comic.id} comic={comic} index={index}></ComicRow>
+              <ComicRow key={comic.id} comic={comic} index={index} onToggle={handleToggle} />
             ))}
           </TableBody>
         </Table>
@@ -107,11 +118,17 @@ export default function ComicTable({ comics }: Props) {
   );
 }
 
-function ComicRow({ comic, index }: { comic: Comic; index: number }) {
-  const [isPurchased, setIsPurchased] = useState(comic.isPurchased);
+function ComicRow({
+  comic,
+  index,
+  onToggle,
+}: {
+  comic: Comic;
+  index: number;
+  onToggle: (id: string) => void;
+}) {
   const handleCheck = async () => {
-    const newValue = !isPurchased;
-    setIsPurchased(newValue);
+    onToggle(comic.id);
 
     await fetch("/api/notion", {
       method: "PATCH",
@@ -119,7 +136,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
       body: JSON.stringify({
         id: comic.id,
         title: comic.title,
-        isPurchased: newValue,
+        isPurchased: !comic.isPurchased,
       }),
     });
   };
@@ -160,7 +177,7 @@ function ComicRow({ comic, index }: { comic: Comic; index: number }) {
         </Typography>
       </TableCell>
       <TableCell sx={{ px: 1 }}>
-        <Checkbox checked={isPurchased} onChange={handleCheck} />
+        <Checkbox checked={comic.isPurchased} onChange={handleCheck} />
       </TableCell>
     </TableRow>
   );
