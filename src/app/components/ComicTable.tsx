@@ -151,16 +151,12 @@ function ComicRow({
       }}
     >
       <TableCell sx={{ px: 1 }}>
-        {comic.thumbnail ? (
-          <Image
-            src={comic.thumbnail}
-            alt={comic.title}
-            width={50}
-            height={75}
-          />
-        ) : (
-          <Typography variant="body2">なし</Typography>
-        )}
+        <Image
+          src={comic.thumbnail || "/no-image.svg"}
+          alt={comic.title}
+          width={50}
+          height={75}
+        />
       </TableCell>
       <TableCell component="th" scope="row" sx={{ px: 1 }}>
         <Link href={`/comics/${comic.id}`} style={{ textDecoration: "none" }}>

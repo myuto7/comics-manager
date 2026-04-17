@@ -47,9 +47,13 @@ describe("ComicTable", () => {
     expect(container.querySelector('[role="progressbar"]')).toBeInTheDocument();
   });
 
-  it("サムネイルがない場合は「なし」が表示される", () => {
+  it("サムネイルがない場合はデフォルト画像が表示される", () => {
     render(<ComicTable comics={mockComics} />);
-    expect(screen.getByText("なし")).toBeInTheDocument();
+    const images = screen.getAllByRole("img");
+    const noImage = images.find(
+      (img) => img.getAttribute("src") === "/no-image.svg"
+    );
+    expect(noImage).toBeInTheDocument();
   });
 
   it("チェックボックスをクリックすると漫画がタブ間を移動する", async () => {
