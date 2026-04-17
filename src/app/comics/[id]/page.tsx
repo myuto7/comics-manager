@@ -22,16 +22,14 @@ export default async function ComicDetailPage({ params }: Props) {
   return (
     <main style={{ padding: "2rem" }}>
       <h1>{comic.title}</h1>
-      {comic.thumbnail && (
-        <Box textAlign="center">
-          <Image
-            src={comic.thumbnail}
-            alt={comic.title}
-            width={200}
-            height={314}
-          />
-        </Box>
-      )}
+      <Box textAlign="center">
+        <Image
+          src={comic.thumbnail || "/no-image.svg"}
+          alt={comic.title}
+          width={200}
+          height={314}
+        />
+      </Box>
       {description && (
         <>
           <h2>あらすじ</h2>
