@@ -48,11 +48,8 @@ describe("ComicTable", () => {
   });
 
   it("サムネイルがない場合はデフォルト画像が表示される", () => {
-    render(<ComicTable comics={mockComics} />);
-    const images = screen.getAllByRole("img");
-    const noImage = images.find(
-      (img) => img.getAttribute("src") === "/no-image.svg"
-    );
+    const { container } = render(<ComicTable comics={mockComics} />);
+    const noImage = container.querySelector('img[src="/no-image.svg"]');
     expect(noImage).toBeInTheDocument();
   });
 
